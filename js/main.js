@@ -15,6 +15,9 @@ let logoutButton=document.getElementById('logout');
 let body=document.getElementsByTagName('body');
 let filesButton=document.getElementById('myFiles');
 let filesSection=document.getElementById('files');
+let model=document.getElementById('modal');
+let addButton=document.getElementById('ajouter');
+let upload_fileForm=document.getElementById('upload_file');
 window.addEventListener('load', function(event) {
   console.log('loaded');
   
@@ -194,6 +197,7 @@ filesButton.onclick =function (){
      text.innerText=`file_path : ${element.file_path} \n file_size : ${element.file_size} \n is_public : ${element.is_public}`;
      div.classList.add('card');
      div.classList.add('postion-relative');
+     div.classList.add('z-0');
      divb.classList.add('card-body');
       h5.classList.add('card-title');
       text.classList.add('card-text');
@@ -211,3 +215,44 @@ filesButton.onclick =function (){
   )
   .catch(error => console.error('Error:', error));
 }
+
+addButton.onclick = function (){
+ 
+  
+  model.classList.remove('d-none');
+    model.classList.add('d-block');
+}
+upload_fileForm.addEventListener('submit', async (e) => {
+ e.preventDefault();
+const input = document.getElementById('file');
+if (!input.files.length) {
+    document.getElementById('status').textContent = 'Please select a file.';
+    return;
+  }
+    const file = input.files[0];
+    const formData = new FormData();
+    formData.append('myFile', file);
+     try {
+    const res = await fetch('api.php?upload=1', {
+      method: 'POST',
+      body: formData
+      // 🚫 Do NOT manually set Content-Type—browser handles multipart boundary :contentReference[oaicite:1]{index=1}
+    });
+    const json = await res.text();
+    console.log(json);
+    
+    if (res.ok) {
+      // document.getElementById('status').innerHTML = `Uploaded successfully!<br><img src="${json.filePath}" width="200">`;
+      console.log('upload');
+      
+    } else {
+      // document.getElementById('status').textContent = `Upload failed: ${json.error}`;
+      console.log('upload fail');
+      
+    }
+  } catch (err) {
+    // document.getElementById('status').textContent = 'Error: ' + err.message;
+    console.log(err);
+    
+  } 
+});

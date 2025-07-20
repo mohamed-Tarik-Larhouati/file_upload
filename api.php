@@ -39,3 +39,26 @@
 
 
     endif;
+    if(isset($_GET['upload'])):
+        header('Content-Type: application/json');
+        $file = $_FILES['myFile'];
+
+        $file_controller=new upload_fileController();
+        if ($file['error'] !== UPLOAD_ERR_OK) {
+        http_response_code(500);
+        echo json_encode(['error' => 'Upload error code ' . $file['error']]);
+        exit;
+    }
+    
+        $targetDir = './uploads/';
+        // upload_file($file_name,$user_id,$file_path,$file_size,$is_public,$uploaded_at)
+        $filename = uniqid() . '-' . basename($file['name']);
+        $destination = $targetDir . $filename;
+        if (!move_uploaded_file($file['tmp_name'], $destination)) {
+         http_response_code(500);
+        echo json_encode(['error' => 'Could not move uploaded file']);
+        exit;
+        echo json_encode(['success' => true, 'filePath' => $destination]);
+
+}
+    endif;
