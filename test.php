@@ -3,6 +3,8 @@
     require_once 'models/database.php';
     require_once 'models/user.php';
     require_once 'controllers/userController.php';
-                $us=new userController();
-        echo json_encode($us->select("1234"));
-   
+    require_once 'models/upload_file.php';
+    $up=new upload_file();
+
+
+

@@ -32,5 +32,19 @@
 
              }
         
+             function select_id($id){
+           
+                    $user=new user();
+                    
+                    $us=$user->select_id($id);
+                    
+                if($us)
+                {
+                                 return json_encode($us[0]);
+
+                }
+                                     return   json_encode(array());
+             }
+            
             }
      
